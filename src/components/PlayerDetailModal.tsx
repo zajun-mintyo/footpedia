@@ -45,11 +45,11 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn select-none" 
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn" 
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-[1230px] h-[92dvh] md:h-auto max-h-[92dvh] md:max-h-[90vh] flex flex-col md:flex-row overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-700/80 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)]"
+        className="relative w-full max-w-[1230px] h-[92dvh] md:h-[88vh] max-h-[92dvh] md:max-h-[88vh] flex flex-col md:flex-row overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-700/80 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 常時アクセス可能なクローズボタン */}
@@ -65,12 +65,12 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
         <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto md:overflow-hidden overscroll-contain">
           
           {/* 左カラム: 選手写真＆背番号バッジ */}
-          <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-64 sm:h-80 md:h-auto md:min-h-[560px] shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80">
+          <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-64 sm:h-80 md:h-full shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80">
             {player.image ? (
               <img
                 src={player.image}
                 alt={player.name_ja}
-                className="h-full w-full object-cover object-top max-h-[560px]"
+                className="h-full w-full object-cover object-top"
               />
             ) : (
               <div className="text-8xl text-slate-700">⚽</div>
@@ -106,7 +106,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
           </div>
 
           {/* 右カラム: 詳細プロフィール・生い立ち・経歴 */}
-          <div className="flex-1 p-5 sm:p-7 md:p-8 flex flex-col justify-between md:overflow-y-auto pb-24 md:pb-8">
+          <div className="flex-1 w-full md:h-full md:overflow-y-auto overscroll-contain p-5 sm:p-7 md:p-8 flex flex-col justify-between pb-24 md:pb-8">
             <div className="space-y-4">
               
               {/* 国籍・ポジションヘッダー */}

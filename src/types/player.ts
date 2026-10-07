@@ -62,4 +62,5 @@ export interface Player {
   intl_goals?: number | null;
   intl_summary?: string;
   style_rich?: string;
+  bio_rich?: string;
 }

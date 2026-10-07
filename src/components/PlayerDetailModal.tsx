@@ -18,33 +18,54 @@ const COUNTRY_FLAGS: Record<string, string> = {
   UKR: '🇺🇦', CZE: '🇨🇿'
 };
 
+function formatBirthDate(dateStr?: string, yearNum?: number): string {
+  if (dateStr) {
+    try {
+      const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (match) {
+        return `${match[1]}年${parseInt(match[2], 10)}月${parseInt(match[3], 10)}日`;
+      }
+    } catch {
+      // fallback
+    }
+  }
+  if (yearNum) {
+    return `${yearNum}年生`;
+  }
+  return '-';
+}
+
 export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, showRuby, onClose }) => {
   if (!player) return null;
 
   const clubs = player.teams_full || player.teams || [];
   const flag = player.is_women ? '🌸' : (COUNTRY_FLAGS[player.country_code] || '🌐');
   const countryName = player.is_women ? '日本女子（なでしこジャパン）' : `${player.country_ja} 代表`;
+  const birthFormatted = formatBirthDate(player.birth_date, player.birth_year);
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-fadeIn" 
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn select-none" 
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-[1230px] my-auto overflow-hidden rounded-3xl border border-slate-700/80 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)]"
+        className="relative w-full max-w-[1230px] h-[92dvh] md:h-auto max-h-[92dvh] md:max-h-[90vh] flex flex-col md:flex-row overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-700/80 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* クローズボタン */}
+        {/* 常時アクセス可能なクローズボタン */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white transition border border-slate-600/50 shadow-lg text-lg"
+          className="absolute top-3 right-3 sm:top-5 sm:right-5 z-30 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-slate-900/90 text-slate-300 hover:bg-slate-800 hover:text-white transition border border-slate-600/60 shadow-2xl text-base sm:text-lg cursor-pointer"
+          title="閉じる"
         >
           ✕
         </button>
 
-        <div className="flex flex-col md:flex-row">
-          {/* 左カラム: 選手写真＆背番号 */}
-          <div className="relative md:w-5/12 bg-slate-950 flex flex-col items-center justify-center min-h-[340px] md:min-h-[560px] overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80">
+        {/* モバイル時は全体が1本の滑らかなスクロール、PC時は写真固定＋右カラムスクロール */}
+        <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto md:overflow-hidden overscroll-contain">
+          
+          {/* 左カラム: 選手写真＆背番号バッジ */}
+          <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-64 sm:h-80 md:h-auto md:min-h-[560px] shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80">
             {player.image ? (
               <img
                 src={player.image}
@@ -57,39 +78,39 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
 
             {/* 背景巨大背番号 */}
             {player.jersey_number && (
-              <div className="pointer-events-none absolute bottom-4 right-4 text-8xl sm:text-9xl font-black text-white/5 select-none leading-none">
+              <div className="pointer-events-none absolute bottom-4 right-4 text-7xl sm:text-9xl font-black text-white/5 select-none leading-none">
                 {player.jersey_number}
               </div>
             )}
 
             {/* 背番号バッジ */}
             {player.jersey_number && (
-              <div className="absolute top-5 left-5 flex items-center justify-center rounded-2xl bg-slate-950/85 backdrop-blur-md px-4 py-1.5 border border-slate-700 shadow-2xl text-emerald-400 font-black text-xl">
+              <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex items-center justify-center rounded-2xl bg-slate-950/85 backdrop-blur-md px-3.5 py-1 sm:px-4 sm:py-1.5 border border-slate-700 shadow-2xl text-emerald-400 font-black text-lg sm:text-xl">
                 #{player.jersey_number}
               </div>
             )}
 
             {/* バロンドールトロフィーアイコン */}
             {player.ballon_dor && (
-              <div className="absolute top-5 right-18 flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 backdrop-blur-md px-3.5 py-1.5 text-slate-950 font-black text-sm shadow-2xl border border-amber-200">
-                <span className="text-base">🏆</span>
+              <div className="absolute top-4 right-16 sm:top-5 sm:right-20 flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 text-slate-950 font-black text-xs sm:text-sm shadow-2xl border border-amber-200">
+                <span className="text-sm sm:text-base">🏆</span>
                 <span>{player.ballon_dor.count > 1 ? `×${player.ballon_dor.count}` : 'WINNER'}</span>
               </div>
             )}
 
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
 
-            <div className="absolute bottom-3 left-3 rounded-lg bg-black/70 backdrop-blur-sm px-2.5 py-1 text-[11px] text-slate-400 font-medium">
+            <div className="absolute bottom-3 left-3 rounded-lg bg-black/70 backdrop-blur-sm px-2.5 py-1 text-[10px] sm:text-[11px] text-slate-400 font-medium">
               Photo: Wikimedia Commons
             </div>
           </div>
 
-          {/* 右カラム: 詳細プロフィール */}
-          <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between max-h-[88vh] overflow-y-auto">
+          {/* 右カラム: 詳細プロフィール・生い立ち・経歴 */}
+          <div className="flex-1 p-5 sm:p-7 md:p-8 flex flex-col justify-between md:overflow-y-auto pb-24 md:pb-8">
             <div className="space-y-4">
               
               {/* 国籍・ポジションヘッダー */}
-              <div className="flex items-center gap-2.5 text-sm">
+              <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
                 <span className="font-bold text-slate-200">
                   {flag} {countryName}
                 </span>
@@ -97,21 +118,29 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
                 <span className="font-black text-emerald-400 tracking-wider">
                   {player.position} ({player.position_detail || player.position})
                 </span>
+                {player.active_decade && (
+                  <>
+                    <span className="text-slate-600">•</span>
+                    <span className="text-slate-400 font-medium">
+                      {player.active_decade}年代
+                    </span>
+                  </>
+                )}
               </div>
 
               {/* 選手名＆英名・愛称 */}
               <div>
                 {showRuby ? (
                   <div
-                    className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight"
+                    className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight select-text"
                     dangerouslySetInnerHTML={{ __html: player.name_ja_ruby }}
                   />
                 ) : (
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
+                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight select-text">
                     {player.name_ja}
                   </h2>
                 )}
-                <div className="mt-1 flex flex-wrap items-center gap-2 text-slate-400 text-sm sm:text-base font-medium">
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-slate-400 text-xs sm:text-base font-medium select-text">
                   <span>{player.name_en}</span>
                   {player.nickname && (
                     <>
@@ -122,48 +151,48 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
                 </div>
               </div>
 
-              {/* プレースタイル・詳細解説 */}
-              <div className="rounded-2xl bg-gradient-to-r from-emerald-950/50 via-slate-900/60 to-slate-900/80 p-4 border border-emerald-500/30 shadow-lg">
-                <div className="text-xs font-black text-emerald-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
-                  <span>⚡</span>
-                  <span>PLAY STYLE &amp; PROFILE</span>
+              {/* 生い立ち・キャリアストーリー（全選手対応リッチテキスト） */}
+              <div className="rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900/70 to-slate-900/90 p-4 border border-emerald-500/30 shadow-lg">
+                <div className="text-xs font-black text-emerald-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                  <span>📖</span>
+                  <span>BIOGRAPHY &amp; ROOTS（生い立ちとキャリアの軌跡）</span>
                 </div>
-                <div className="text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
-                  {player.style_rich || player.style_summary || player.desc_ja || '世界的名手としてサッカー史にその名を刻むレジェンド。'}
+                <div className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal select-text">
+                  {player.bio_rich || player.style_rich || player.style_summary || player.desc_ja || '世界的な名手としてフットボール史に刻まれるレジェンド。'}
                 </div>
               </div>
 
-              {/* 基本スタッツグリッド */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {/* 基本スタッツグリッド（生年月日・身長・利き足・出身地） */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
                 <div className="rounded-xl bg-slate-800/60 p-2.5 border border-slate-700/50">
-                  <span className="text-[11px] font-semibold text-slate-400 block mb-0.5">生年月日 / 年齢</span>
-                  <span className="text-sm font-bold text-white">
-                    {player.birth_date ? player.birth_date.slice(0, 10) : (player.birth_year ? `${player.birth_year}年生` : '-')}
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 block mb-0.5">生年月日</span>
+                  <span className="text-xs sm:text-sm font-bold text-white block truncate">
+                    {birthFormatted}
                   </span>
                 </div>
                 <div className="rounded-xl bg-slate-800/60 p-2.5 border border-slate-700/50">
-                  <span className="text-[11px] font-semibold text-slate-400 block mb-0.5">身長</span>
-                  <span className="text-sm font-bold text-white">
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 block mb-0.5">身長</span>
+                  <span className="text-xs sm:text-sm font-bold text-white">
                     {player.height ? `${player.height} cm` : '-'}
                   </span>
                 </div>
                 <div className="rounded-xl bg-slate-800/60 p-2.5 border border-slate-700/50">
-                  <span className="text-[11px] font-semibold text-slate-400 block mb-0.5">利き足</span>
-                  <span className="text-sm font-bold text-white">
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 block mb-0.5">利き足</span>
+                  <span className="text-xs sm:text-sm font-bold text-white">
                     {player.preferred_foot || '-'}
                   </span>
                 </div>
                 <div className="rounded-xl bg-slate-800/60 p-2.5 border border-slate-700/50">
-                  <span className="text-[11px] font-semibold text-slate-400 block mb-0.5">出身地</span>
-                  <span className="text-sm font-bold text-white truncate block">
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 block mb-0.5">出身地</span>
+                  <span className="text-xs sm:text-sm font-bold text-white truncate block">
                     {player.birth_place || player.country_ja}
                   </span>
                 </div>
               </div>
 
-              {/* 栄冠・タイトルアワード */}
+              {/* 栄冠・タイトルアワード（該当選手のみ） */}
               {(player.ballon_dor || player.world_cup || (player.league_mvp && player.league_mvp.length > 0)) && (
-                <div className="rounded-2xl bg-gradient-to-r from-amber-950/30 via-slate-900/60 to-slate-900/80 p-4 border border-amber-500/30">
+                <div className="rounded-2xl bg-gradient-to-r from-amber-950/30 via-slate-900/60 to-slate-900/80 p-3.5 sm:p-4 border border-amber-500/30">
                   <div className="text-xs font-black text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
                     <span>🏆</span>
                     <span>HONORS &amp; AWARDS（獲得主要タイトル・個人賞）</span>
@@ -249,7 +278,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
                 </div>
               )}
 
-              {/* 国際Aマッチ成績 */}
+              {/* 国際Aマッチ成績（記録がある場合） */}
               {player.intl_caps !== undefined && player.intl_caps !== null && (
                 <div className="rounded-2xl bg-slate-800/80 p-3.5 border border-slate-700/60 shadow-inner">
                   <div className="text-xs font-black text-sky-400 uppercase tracking-widest mb-1.5 flex items-center justify-between">
@@ -276,18 +305,24 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
                 </div>
               )}
 
-              {/* 所属クラブ遍歴 */}
+              {/* 所属クラブ遍歴（リッチ表示） */}
               <div>
-                <span className="text-xs font-black text-slate-400 uppercase tracking-wider block mb-2">
-                  主要所属クラブ遍歴
-                </span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-black text-slate-400 uppercase tracking-wider">
+                    所属クラブ遍歴
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                    全{clubs.length}クラブ
+                  </span>
+                </div>
                 <div className="flex flex-wrap gap-1.5">
                   {clubs.map((club, idx) => (
                     <span 
                       key={idx}
-                      className="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700/60"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 text-xs font-medium border border-slate-700/60 transition"
                     >
-                      {club}
+                      <span className="text-[10px] text-emerald-400 font-bold">{idx + 1}.</span>
+                      <span>{club}</span>
                     </span>
                   ))}
                 </div>
@@ -296,8 +331,8 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
             </div>
 
             {/* モーダルフッター（Wikipediaリンク等） */}
-            <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span className="text-xs text-slate-400">
+            <div className="mt-8 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <span className="text-[11px] text-slate-500 font-medium order-2 sm:order-1">
                 Footpedia 歴代レジェンド名鑑
               </span>
               {player.wiki_url && (
@@ -305,10 +340,10 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
                   href={player.wiki_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 transition font-semibold"
+                  className="order-1 sm:order-2 inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition shadow-sm active:scale-95"
                 >
                   <span>Wikipediaで詳細を見る</span>
-                  <span>↗</span>
+                  <span className="text-sm">↗</span>
                 </a>
               )}
             </div>

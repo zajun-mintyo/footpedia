@@ -866,12 +866,7 @@
     }
 
   
-    /* ふりがな非表示（ruby-off） */
-    body.ruby-off rt,
-    body.ruby-off .piece-label rt,
-    body.ruby-off .card-name rt {
-      display: none !important;
-    }
+    
     
 </style>
 </head>
@@ -885,13 +880,7 @@
       </div>
     </div>
     <div style="display:flex; gap:10px; align-items:center;">
-      <!-- ふりがな ON/OFF スイッチ -->
-      <div class="ruby-toggle-wrapper">
-        <span>ふりがな</span>
-        <button id="rubyToggleBtn" onclick="toggleRuby()" class="ruby-switch-btn on" title="ふりがな（ルビ）表示の切り替え">
-          <span class="ruby-switch-knob"></span>
-        </button>
-      </div>
+      
 
       <button id="btnHelp" class="nav-btn" style="background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8;" title="使い方とショートカット一覧">
         ❓ 使い方 / ショートカット
@@ -1969,7 +1958,7 @@
           // ラベル
           const label = document.createElement('div');
           label.className = 'piece-label';
-          label.innerHTML = isRubyOn ? (p.playerObj.ruby || p.playerObj.name) : p.playerObj.name;
+          label.textContent = p.playerObj.name;
           el.appendChild(label);
         }
 
@@ -2455,26 +2444,7 @@
     // スポットライト・ハイライト演出機能
     // -------------------------------------------------------------
     
-    // -------------------------------------------------------------
-    // ふりがな（ルビ）表示切り替え機能
-    // -------------------------------------------------------------
-    let isRubyOn = true;
-    function toggleRuby() {
-      isRubyOn = !isRubyOn;
-      const btn = document.getElementById('rubyToggleBtn');
-      if (btn) {
-        if (isRubyOn) {
-          btn.classList.add('on');
-        } else {
-          btn.classList.remove('on');
-        }
-      }
-      document.body.classList.toggle('ruby-off', !isRubyOn);
-      renderPieces();
-      if (modalSearchInput) {
-        filterModalPlayers(modalSearchInput.value);
-      }
-    }
+    
 
     let spotlightTimer = null;
     let currentSpotlightPieceId = null;
@@ -2538,7 +2508,7 @@
         card.className = 'player-select-card';
         card.innerHTML = `
           <img class="card-thumb" src="${p.image}" alt="${p.name}" referrerpolicy="no-referrer" loading="lazy" />
-          <div class="card-name">${isRubyOn ? (p.ruby || p.name) : p.name}</div>
+          <div class="card-name">${p.name}</div>
           <div class="card-meta">
             <span class="piece-pos-badge pos-${p.pos}" style="position:static;">${p.pos}</span>
             <span>${p.country_code}</span>

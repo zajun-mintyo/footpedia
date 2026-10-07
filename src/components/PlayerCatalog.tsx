@@ -60,7 +60,6 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
   const [selectedDecade, setSelectedDecade] = useState('ALL');
   const [selectedCountry, setSelectedCountry] = useState('ALL');
   const [selectedPosition, setSelectedPosition] = useState('ALL');
-  const [showRuby, setShowRuby] = useState(true);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -181,25 +180,15 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
               </div>
             </div>
 
-            {/* スマホ用: ボード盤リンク＆ルビスイッチ */}
-            <div className="flex md:hidden items-center gap-1.5 shrink-0">
+            {/* スマホ用: ボード盤リンク */}
+            <div className="flex md:hidden items-center shrink-0">
               <Link
                 href="/board"
-                className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full text-xs font-bold shadow-sm whitespace-nowrap shrink-0 transition-transform active:scale-95 border border-emerald-400/30"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full text-xs font-bold shadow-sm whitespace-nowrap shrink-0 transition-transform active:scale-95 border border-emerald-400/30"
               >
                 <span>⚽</span>
                 <span>作戦ボード</span>
               </Link>
-              <button
-                onClick={() => setShowRuby(!showRuby)}
-                className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-full px-2 py-1 text-[11px] text-slate-300 shrink-0 cursor-pointer active:scale-95 select-none"
-                title="ふりがな（ルビ）の表示切替"
-              >
-                <span className="text-[10px] text-slate-400 font-medium">ルビ</span>
-                <span className={`w-7 h-3.5 rounded-full relative transition-colors ${showRuby ? 'bg-emerald-500' : 'bg-slate-700'}`}>
-                  <span className={`block w-2.5 h-2.5 bg-white rounded-full transition-transform absolute top-0.5 ${showRuby ? 'right-0.5' : 'left-0.5'}`}></span>
-                </span>
-              </button>
             </div>
           </div>
 
@@ -242,22 +231,11 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
             {/* PC用: サッカーボード盤リンク */}
             <Link
               href="/board"
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full text-xs font-bold transition shadow-md shrink-0 border border-emerald-400/30"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full text-xs font-bold transition shadow-md shrink-0 border border-emerald-400/30"
             >
               <span>⚽</span>
               <span>作戦ボード</span>
             </Link>
-
-            {/* PC用ルビスイッチ */}
-            <button
-              onClick={() => setShowRuby(!showRuby)}
-              className="hidden md:flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-full px-3.5 py-1.5 shrink-0 cursor-pointer select-none hover:border-slate-700 transition"
-            >
-              <span className="text-xs font-medium text-slate-300">ふりがな</span>
-              <span className={`w-9 h-5 rounded-full relative transition-colors ${showRuby ? 'bg-emerald-500' : 'bg-slate-700'}`}>
-                <span className={`block w-4 h-4 bg-white rounded-full transition-transform ${showRuby ? 'translate-x-4' : 'translate-x-1'}`}></span>
-              </span>
-            </button>
           </div>
         </div>
       </header>
@@ -390,7 +368,6 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
               <PlayerCard
                 key={player.qid}
                 player={player}
-                showRuby={showRuby}
                 onSelect={setSelectedPlayer}
               />
             ))}
@@ -402,7 +379,6 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
       {selectedPlayer && (
         <PlayerDetailModal
           player={selectedPlayer}
-          showRuby={showRuby}
           onClose={() => setSelectedPlayer(null)}
         />
       )}

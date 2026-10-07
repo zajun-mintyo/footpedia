@@ -5,7 +5,6 @@ import { Player } from '@/types/player';
 
 interface PlayerCardProps {
   player: Player;
-  showRuby: boolean;
   onSelect: (player: Player) => void;
 }
 
@@ -25,7 +24,7 @@ const POSITION_THEMES: Record<string, { badge: string; border: string; label: st
   GK: { badge: 'bg-amber-500 text-slate-900', border: 'border-amber-400/40 hover:border-amber-500', label: 'GK (守護神)' },
 };
 
-export const PlayerCard: React.FC<PlayerCardProps> = ({ player, showRuby, onSelect }) => {
+export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onSelect }) => {
   const flag = player.is_women ? '🌸' : (COUNTRY_FLAGS[player.country_code] || '🌐');
   const posTheme = POSITION_THEMES[player.position] || POSITION_THEMES.MF;
   const primaryClub = (player.teams_full && player.teams_full.length > 0)
@@ -110,16 +109,9 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, showRuby, onSele
       {/* 3. 選手情報 */}
       <div className="flex flex-col justify-between pt-1">
         <div className="mb-1">
-          {showRuby ? (
-            <div
-              className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors line-clamp-1 leading-snug"
-              dangerouslySetInnerHTML={{ __html: player.name_ja_ruby }}
-            />
-          ) : (
-            <div className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
-              {player.name_ja}
-            </div>
-          )}
+          <div className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
+            {player.name_ja}
+          </div>
           <div className="text-[10px] text-slate-400 truncate tracking-wide">
             {player.name_en}
           </div>

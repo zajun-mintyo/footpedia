@@ -5,7 +5,6 @@ import { Player } from '@/types/player';
 
 interface PlayerDetailModalProps {
   player: Player | null;
-  showRuby: boolean;
   onClose: () => void;
 }
 
@@ -35,7 +34,7 @@ function formatBirthDate(dateStr?: string, yearNum?: number): string {
   return '-';
 }
 
-export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, showRuby, onClose }) => {
+export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, onClose }) => {
   if (!player) return null;
 
   const clubs = player.teams_full || player.teams || [];
@@ -130,16 +129,9 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, sh
 
               {/* 選手名＆英名・愛称 */}
               <div>
-                {showRuby ? (
-                  <div
-                    className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight select-text"
-                    dangerouslySetInnerHTML={{ __html: player.name_ja_ruby }}
-                  />
-                ) : (
-                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight select-text">
-                    {player.name_ja}
-                  </h2>
-                )}
+                <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight select-text">
+                  {player.name_ja}
+                </h2>
                 <div className="mt-1 flex flex-wrap items-center gap-2 text-slate-400 text-xs sm:text-base font-medium select-text">
                   <span>{player.name_en}</span>
                   {player.nickname && (

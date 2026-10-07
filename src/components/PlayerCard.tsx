@@ -52,21 +52,23 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, showRuby, onSele
       </div>
 
       {/* 2. 写真エリア */}
-      <div className="relative my-2 w-full flex-1 overflow-hidden rounded-xl bg-slate-800/80 border border-slate-700/50">
-        {player.image ? (
+      <div className="relative my-2 w-full flex-1 overflow-hidden rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700/50 flex items-center justify-center">
+        {/* 背景プレースホルダー（画像ロード失敗時やロード中にも美しく表示） */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-600 select-none">
+          <span className="text-3xl opacity-40">⚽</span>
+          <span className="text-[10px] font-black text-slate-500 mt-1 uppercase tracking-wider">{player.position}</span>
+        </div>
+
+        {player.image && (
           <img
             src={player.image}
             alt={player.name_ja}
             loading="lazy"
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            className="relative z-10 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
               (e.target as HTMLElement).style.display = 'none';
             }}
           />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-4xl text-slate-600">
-            ⚽
-          </div>
         )}
         
         {/* タイトル・栄冠バッジ */}

@@ -165,36 +165,39 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
       {/* グローバルヘッダー */}
       <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/85 backdrop-blur-md px-4 py-3 sm:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="flex items-center justify-between w-full md:w-auto">
-            <div className="flex items-center gap-2.5 cursor-pointer" onClick={handleResetFilters}>
-              <span className="text-3xl">⚽</span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-xl font-black tracking-tight text-white">FootPedia</h1>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          <div className="flex items-center justify-between w-full md:w-auto gap-2">
+            <div className="flex items-center gap-2 cursor-pointer min-w-0" onClick={handleResetFilters}>
+              <span className="text-2xl sm:text-3xl shrink-0">⚽</span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <h1 className="text-lg sm:text-xl font-black tracking-tight text-white whitespace-nowrap">FootPedia</h1>
+                  <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap shrink-0">
                     500 LEGENDS
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 font-medium">世界のレジェンド＆名選手 500名デジタル名鑑</p>
+                <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium truncate max-w-[170px] sm:max-w-none">
+                  世界のレジェンド＆名選手 500名デジタル名鑑
+                </p>
               </div>
             </div>
 
             {/* スマホ用: ボード盤リンク＆ルビスイッチ */}
-            <div className="flex md:hidden items-center gap-2">
+            <div className="flex md:hidden items-center gap-1.5 shrink-0">
               <Link
                 href="/board"
-                className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-600 text-white rounded-full text-[11px] font-bold shadow-md"
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full text-xs font-bold shadow-sm whitespace-nowrap shrink-0 transition-transform active:scale-95 border border-emerald-400/30"
               >
                 <span>⚽</span>
-                <span>サッカーボード</span>
+                <span>作戦ボード</span>
               </Link>
               <button
                 onClick={() => setShowRuby(!showRuby)}
-                className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-full px-2.5 py-1 text-[11px] text-slate-300"
+                className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-full px-2 py-1 text-[11px] text-slate-300 shrink-0 cursor-pointer active:scale-95 select-none"
+                title="ふりがな（ルビ）の表示切替"
               >
-                <span>ルビ</span>
-                <span className={`w-8 h-4 rounded-full relative transition-colors ${showRuby ? 'bg-emerald-500' : 'bg-slate-700'}`}>
-                  <span className={`block w-3 h-3 bg-white rounded-full transition-transform ${showRuby ? 'translate-x-4' : 'translate-x-1'}`}></span>
+                <span className="text-[10px] text-slate-400 font-medium">ルビ</span>
+                <span className={`w-7 h-3.5 rounded-full relative transition-colors ${showRuby ? 'bg-emerald-500' : 'bg-slate-700'}`}>
+                  <span className={`block w-2.5 h-2.5 bg-white rounded-full transition-transform absolute top-0.5 ${showRuby ? 'right-0.5' : 'left-0.5'}`}></span>
                 </span>
               </button>
             </div>
@@ -239,10 +242,10 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
             {/* PC用: サッカーボード盤リンク */}
             <Link
               href="/board"
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-bold transition shadow-md shrink-0"
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full text-xs font-bold transition shadow-md shrink-0 border border-emerald-400/30"
             >
               <span>⚽</span>
-              <span>サッカーボードアプリ</span>
+              <span>作戦ボード</span>
             </Link>
 
             {/* PC用ルビスイッチ */}

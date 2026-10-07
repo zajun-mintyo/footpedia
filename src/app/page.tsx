@@ -5,13 +5,20 @@ import { Player } from '@/types/player';
 import { PlayerCatalog } from '@/components/PlayerCatalog';
 
 export const metadata: Metadata = {
-  title: 'Footpedia（フットペディア）- 歴代サッカーレジェンド500名名鑑 & 戦術ボード',
-  description: '世界歴代サッカースター500名の詳細プロフィール（ふりがなルビ付き、プレースタイル、獲得タイトル、背番号）を網羅した国内最大級のサッカー百科事典＆タクティクスボードアプリ。',
+  title: 'FootPedia（フットペディア）- 歴代サッカーレジェンド500名名鑑 & 戦術ボード',
+  description: '世界歴代サッカースター500名の詳細プロフィール（ふりがなルビ付き、プレースタイル、獲得タイトル、背番号）を網羅した国内最大級のサッカー百科事典＆タクティクス作戦ボードアプリ。',
   keywords: ['サッカー', '選手名鑑', '歴代レジェンド', 'バロンドール', 'ワールドカップ', 'なでしこジャパン', '戦術ボード', '作戦盤'],
   openGraph: {
-    title: 'Footpedia - 歴代サッカーレジェンド500名名鑑',
-    description: '世界歴代サッカースター500名の詳細プロフィール＆無料作戦盤アプリ',
+    title: 'FootPedia - 歴代サッカーレジェンド500名名鑑 ＆ タクティクス作戦ボード',
+    description: '世界歴代サッカースター500名の詳細プロフィール＆ブラウザで動く無料作戦盤アプリ',
     type: 'website',
+    images: ['/ogp.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FootPedia - 歴代サッカーレジェンド500名名鑑 ＆ タクティクス作戦ボード',
+    description: '世界歴代サッカースター500名の詳細プロフィール＆ブラウザで動く無料作戦盤アプリ',
+    images: ['/ogp.png'],
   },
 };
 

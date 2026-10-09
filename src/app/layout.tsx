@@ -43,6 +43,9 @@ export const metadata: Metadata = {
     description: "世界歴代サッカースター500名の詳細プロフィール＆無料作戦盤アプリ",
     images: ["/ogp.png"],
   },
+  verification: {
+    google: "PWyl9wiPWp7WS5DrfHowmNdz6buiN8XAjaBnfAn-Ulg",
+  },
 };
 
 export default function RootLayout({

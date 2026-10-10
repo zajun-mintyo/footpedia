@@ -64,42 +64,52 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
         <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto md:overflow-hidden overscroll-contain">
           
           {/* 左カラム: 選手写真＆背番号バッジ */}
-          <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-64 sm:h-80 md:h-full shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80">
+          <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-80 sm:h-96 md:h-full min-h-[320px] sm:min-h-[380px] shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80">
             {player.image ? (
-              <img
-                src={player.image}
-                alt={player.name_ja}
-                className="h-full w-full object-cover object-top"
-              />
+              <>
+                {/* 背景アンビエントぼかし（アスペクト比の差を自然に埋め、上質なカード感を演出） */}
+                <img
+                  src={player.image}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full object-cover blur-2xl opacity-35 scale-110 pointer-events-none"
+                />
+                {/* メイン写真: スマホでは見切れゼロのcontain、PCでは大迫力のcover */}
+                <img
+                  src={player.image}
+                  alt={player.name_ja}
+                  className="relative z-10 h-full w-full object-contain md:object-cover md:object-top drop-shadow-2xl"
+                />
+              </>
             ) : (
               <div className="text-8xl text-slate-700">⚽</div>
             )}
 
             {/* 背景巨大背番号 */}
             {player.jersey_number && (
-              <div className="pointer-events-none absolute bottom-4 right-4 text-7xl sm:text-9xl font-black text-white/5 select-none leading-none">
+              <div className="pointer-events-none absolute bottom-4 right-4 text-7xl sm:text-9xl font-black text-white/5 select-none leading-none z-10">
                 {player.jersey_number}
               </div>
             )}
 
             {/* 背番号バッジ */}
             {player.jersey_number && (
-              <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex items-center justify-center rounded-2xl bg-slate-950/85 backdrop-blur-md px-3.5 py-1 sm:px-4 sm:py-1.5 border border-slate-700 shadow-2xl text-emerald-400 font-black text-lg sm:text-xl">
+              <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 flex items-center justify-center rounded-2xl bg-slate-950/85 backdrop-blur-md px-3.5 py-1 sm:px-4 sm:py-1.5 border border-slate-700 shadow-2xl text-emerald-400 font-black text-lg sm:text-xl">
                 #{player.jersey_number}
               </div>
             )}
 
             {/* バロンドールトロフィーアイコン */}
             {player.ballon_dor && (
-              <div className="absolute top-4 right-16 sm:top-5 sm:right-20 flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 text-slate-950 font-black text-xs sm:text-sm shadow-2xl border border-amber-200">
+              <div className="absolute top-4 right-16 sm:top-5 sm:right-20 z-20 flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 text-slate-950 font-black text-xs sm:text-sm shadow-2xl border border-amber-200">
                 <span className="text-sm sm:text-base">🏆</span>
                 <span>{player.ballon_dor.count > 1 ? `×${player.ballon_dor.count}` : 'WINNER'}</span>
               </div>
             )}
 
-            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-14 md:h-20 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none z-20" />
 
-            <div className="absolute bottom-3 left-3 rounded-lg bg-black/70 backdrop-blur-sm px-2.5 py-1 text-[10px] sm:text-[11px] text-slate-400 font-medium">
+            <div className="absolute bottom-3 left-3 z-20 rounded-lg bg-black/70 backdrop-blur-sm px-2.5 py-1 text-[10px] sm:text-[11px] text-slate-400 font-medium">
               Photo: Wikimedia Commons
             </div>
           </div>

@@ -12,9 +12,11 @@ const COUNTRY_FLAGS: Record<string, string> = {
   JPN: '🇯🇵', BRA: '🇧🇷', ARG: '🇦🇷', FRA: '🇫🇷', DEU: '🇩🇪',
   GBR: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', ESP: '🇪🇸', ITA: '🇮🇹', PRT: '🇵🇹',
   NLD: '🇳🇱', URY: '🇺🇾', COL: '🇨🇴', CHL: '🇨🇱', SWE: '🇸🇪',
-  HRV: '🇭🇷', ROU: '🇷🇴', BGR: '🇧🇬', CIV: '🇨🇮', GHA: '🇬🇭',
+  HRV: '🇭🇷', CRO: '🇭🇷', ROU: '🇷🇴', BGR: '🇧🇬', CIV: '🇨🇮', GHA: '🇬🇭',
   CMR: '🇨🇲', KOR: '🇰🇷', IRN: '🇮🇷', SRB: '🇷🇸', DNK: '🇩🇰',
-  UKR: '🇺🇦', CZE: '🇨🇿'
+  UKR: '🇺🇦', CZE: '🇨🇿', POL: '🇵🇱', PRY: '🇵🇾', PAR: '🇵🇾',
+  BEL: '🇧🇪', WAL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', SCO: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', NOR: '🇳🇴', AUT: '🇦🇹',
+  NGA: '🇳🇬', MEX: '🇲🇽', USA: '🇺🇸', SEN: '🇸🇳', EGY: '🇪🇬'
 };
 
 function formatBirthDate(dateStr?: string, yearNum?: number): string {
@@ -44,27 +46,28 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn" 
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn overflow-hidden" 
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-[1230px] h-[92dvh] md:h-[88vh] max-h-[92dvh] md:max-h-[88vh] flex flex-col md:flex-row overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-700/80 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)]"
+        className="relative w-full max-w-[95vw] sm:max-w-2xl md:max-w-[1230px] h-[92dvh] md:h-[88vh] max-h-[92dvh] md:max-h-[88vh] flex flex-col md:flex-row overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-700/80 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] min-w-0"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 常時アクセス可能なクローズボタン */}
+        {/* 常時アクセス可能なクローズボタン（モーダルカード内の右上に確実に固定） */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 sm:top-5 sm:right-5 z-30 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-slate-900/90 text-slate-300 hover:bg-slate-800 hover:text-white transition border border-slate-600/60 shadow-2xl text-base sm:text-lg cursor-pointer"
+          className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-40 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-slate-900/90 text-slate-300 hover:bg-slate-800 hover:text-white transition border border-slate-600/70 shadow-2xl text-base sm:text-lg cursor-pointer active:scale-90"
           title="閉じる"
+          aria-label="閉じる"
         >
           ✕
         </button>
 
         {/* モバイル時は全体が1本の滑らかなスクロール、PC時は写真固定＋右カラムスクロール */}
-        <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto md:overflow-hidden overscroll-contain">
+        <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto overflow-x-hidden md:overflow-hidden overscroll-contain min-w-0">
           
           {/* 左カラム: 選手写真＆背番号バッジ */}
-          <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-80 sm:h-96 md:h-full min-h-[320px] sm:min-h-[380px] shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80">
+          <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-[340px] xs:h-[380px] sm:h-[420px] md:h-full min-h-[320px] shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80 min-w-0">
             {player.image ? (
               <>
                 {/* 背景アンビエントぼかし（アスペクト比の差を自然に埋め、上質なカード感を演出） */}
@@ -72,14 +75,17 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
                   src={player.image}
                   alt=""
                   aria-hidden="true"
-                  className="absolute inset-0 h-full w-full object-cover blur-2xl opacity-35 scale-110 pointer-events-none"
+                  className="absolute inset-0 h-full w-full object-cover blur-2xl opacity-40 scale-125 pointer-events-none"
                 />
-                {/* メイン写真: スマホでは見切れゼロのcontain、PCでは大迫力のcover */}
-                <img
-                  src={player.image}
-                  alt={player.name_ja}
-                  className="relative z-10 h-full w-full object-contain md:object-cover md:object-top drop-shadow-2xl"
-                />
+                {/* メイン写真: スマホでもPCでも見切れゼロ（頭頂部〜胸元まで100%全景表示） */}
+                <div className="relative z-10 w-full h-full flex items-center justify-center p-2 sm:p-4">
+                  <img
+                    src={player.image}
+                    alt={player.name_ja}
+                    style={{ objectFit: 'contain' }}
+                    className="max-h-full max-w-full h-auto w-auto object-contain drop-shadow-2xl"
+                  />
+                </div>
               </>
             ) : (
               <div className="text-8xl text-slate-700">⚽</div>
@@ -94,28 +100,28 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
 
             {/* 背番号バッジ */}
             {player.jersey_number && (
-              <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 flex items-center justify-center rounded-2xl bg-slate-950/85 backdrop-blur-md px-3.5 py-1 sm:px-4 sm:py-1.5 border border-slate-700 shadow-2xl text-emerald-400 font-black text-lg sm:text-xl">
+              <div className="absolute top-3 left-3 sm:top-5 sm:left-5 z-20 flex items-center justify-center rounded-2xl bg-slate-950/85 backdrop-blur-md px-3 py-1 sm:px-4 sm:py-1.5 border border-slate-700 shadow-2xl text-emerald-400 font-black text-base sm:text-xl">
                 #{player.jersey_number}
               </div>
             )}
 
             {/* バロンドールトロフィーアイコン */}
             {player.ballon_dor && (
-              <div className="absolute top-4 right-16 sm:top-5 sm:right-20 z-20 flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 text-slate-950 font-black text-xs sm:text-sm shadow-2xl border border-amber-200">
+              <div className="absolute top-3 right-14 sm:top-5 sm:right-20 z-20 flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 text-slate-950 font-black text-xs sm:text-sm shadow-2xl border border-amber-200">
                 <span className="text-sm sm:text-base">🏆</span>
                 <span>{player.ballon_dor.count > 1 ? `×${player.ballon_dor.count}` : 'WINNER'}</span>
               </div>
             )}
 
-            <div className="absolute inset-x-0 bottom-0 h-14 md:h-20 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none z-20" />
+            <div className="absolute inset-x-0 bottom-0 h-12 md:h-16 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent pointer-events-none z-20" />
 
-            <div className="absolute bottom-3 left-3 z-20 rounded-lg bg-black/70 backdrop-blur-sm px-2.5 py-1 text-[10px] sm:text-[11px] text-slate-400 font-medium">
+            <div className="absolute bottom-2.5 left-2.5 z-20 rounded-lg bg-black/75 backdrop-blur-sm px-2.5 py-1 text-[10px] sm:text-[11px] text-slate-400 font-medium">
               Photo: Wikimedia Commons
             </div>
           </div>
 
           {/* 右カラム: 詳細プロフィール・生い立ち・経歴 */}
-          <div className="flex-1 w-full md:h-full md:overflow-y-auto overscroll-contain p-5 sm:p-7 md:p-8 flex flex-col justify-between pb-24 md:pb-8">
+          <div className="flex-1 w-full md:h-full md:overflow-y-auto overscroll-contain p-4 sm:p-7 md:p-8 flex flex-col justify-between pb-24 md:pb-8 min-w-0 max-w-full overflow-x-hidden">
             <div className="space-y-4">
               
               {/* 国籍・ポジションヘッダー */}

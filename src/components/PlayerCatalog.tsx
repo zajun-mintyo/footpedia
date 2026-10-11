@@ -33,6 +33,11 @@ const COUNTRIES = [
   { code: 'ITA', label: 'イタリア', flag: '🇮🇹' },
   { code: 'PRT', label: 'ポルトガル', flag: '🇵🇹' },
   { code: 'NLD', label: 'オランダ', flag: '🇳🇱' },
+  { code: 'CZE', label: 'チェコ', flag: '🇨🇿' },
+  { code: 'COL', label: 'コロンビア', flag: '🇨🇴' },
+  { code: 'HRV', label: 'クロアチア', flag: '🇭🇷' },
+  { code: 'POL', label: 'ポーランド', flag: '🇵🇱' },
+  { code: 'PRY', label: 'パラグアイ', flag: '🇵🇾' },
   { code: 'URY', label: 'ウルグアイ', flag: '🇺🇾' },
 ];
 
@@ -98,7 +103,7 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
     const searchTokens = rawTokens.map(normalizeSearchText);
 
     return players.filter((p) => {
-      // 1. テキスト検索（AND検索・ひらがな/カタカナ相互・スペース/中黒柔軟マッチ）
+      // 1. テキスト検索（AND検索・ひらがな/カタカナ相互・スペース/中黒柔軟マッチ・生い立ちやアワードも対象）
       if (searchTokens.length > 0) {
         const allMatch = searchTokens.every((token) => {
           if (!token) return true;
@@ -114,6 +119,23 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
           if (p.teams_full && p.teams_full.some((t) => normalizeSearchText(t).includes(token))) return true;
           if (p.desc_ja && normalizeSearchText(p.desc_ja).includes(token)) return true;
           if (p.style_summary && normalizeSearchText(p.style_summary).includes(token)) return true;
+          if (p.style_rich && normalizeSearchText(p.style_rich).includes(token)) return true;
+          if (p.bio_rich && normalizeSearchText(p.bio_rich).includes(token)) return true;
+          // バロンドール検索
+          if (p.ballon_dor) {
+            if (normalizeSearchText('バロンドール ballon dor').includes(token)) return true;
+            if (p.ballon_dor.special && normalizeSearchText(p.ballon_dor.special).includes(token)) return true;
+          }
+          // W杯関連検索
+          if (p.world_cup) {
+            if (p.world_cup.is_winner && normalizeSearchText('w杯優勝 ワールドカップ優勝 world cup').includes(token)) return true;
+            if (p.world_cup.is_golden_boot && normalizeSearchText('w杯得点王 ゴールデンブーツ golden boot').includes(token)) return true;
+          }
+          // リーグMVP検索
+          if (p.league_mvp && p.league_mvp.length > 0) {
+            if (normalizeSearchText('mvp 最優秀選手').includes(token)) return true;
+            if (p.league_mvp.some(m => typeof m === 'string' ? normalizeSearchText(m).includes(token) : normalizeSearchText(`${m.league} ${m.award}`).includes(token))) return true;
+          }
           return false;
         });
         if (!allMatch) return false;
@@ -138,6 +160,10 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
           if (p.country_code !== 'JPN' || p.is_women) return false;
         } else if (selectedCountry === 'GBR') {
           if (p.country_code !== 'GBR' && p.country_code !== 'ENG') return false;
+        } else if (selectedCountry === 'HRV') {
+          if (p.country_code !== 'HRV' && p.country_code !== 'CRO') return false;
+        } else if (selectedCountry === 'PRY') {
+          if (p.country_code !== 'PRY' && p.country_code !== 'PAR') return false;
         } else if (p.country_code !== selectedCountry) {
           return false;
         }
@@ -171,11 +197,11 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
                 <div className="flex items-center gap-1.5">
                   <h1 className="text-lg sm:text-xl font-black tracking-tight text-white whitespace-nowrap">FootPedia</h1>
                   <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap shrink-0">
-                    500 LEGENDS
+                    {players.length} LEGENDS
                   </span>
                 </div>
                 <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium truncate max-w-[170px] sm:max-w-none">
-                  世界のレジェンド＆名選手 500名デジタル名鑑
+                  世界のレジェンド＆名選手 {players.length}名デジタル名鑑
                 </p>
               </div>
             </div>

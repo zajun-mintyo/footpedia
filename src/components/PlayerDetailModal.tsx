@@ -63,8 +63,8 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
           ✕
         </button>
 
-        {/* モバイル時は全体が1本の滑らかなスクロール、PC時は写真固定＋右カラムスクロール */}
-        <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto overflow-x-hidden md:overflow-hidden overscroll-contain min-w-0">
+        {/* モバイル時は全体が1本の滑らかなスクロール（画像も一緒に上へスライド）、PC時は写真固定＋右カラムスクロール */}
+        <div className="block md:flex md:flex-row w-full h-full overflow-y-auto overflow-x-hidden md:overflow-hidden overscroll-contain min-w-0">
           
           {/* 左カラム: 選手写真＆背番号バッジ */}
           <div className="relative w-full md:w-5/12 bg-slate-950 flex flex-col items-center justify-center h-[340px] xs:h-[380px] sm:h-[420px] md:h-full min-h-[320px] shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-slate-800/80 min-w-0">
@@ -121,7 +121,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
           </div>
 
           {/* 右カラム: 詳細プロフィール・生い立ち・経歴 */}
-          <div className="flex-1 w-full md:h-full md:overflow-y-auto overscroll-contain p-4 sm:p-7 md:p-8 flex flex-col justify-between pb-24 md:pb-8 min-w-0 max-w-full overflow-x-hidden">
+          <div className="w-full md:flex-1 md:h-full md:overflow-y-auto md:overscroll-contain p-4 sm:p-7 md:p-8 flex flex-col justify-between pb-24 md:pb-8 min-w-0 max-w-full md:overflow-x-hidden">
             <div className="space-y-4">
               
               {/* 国籍・ポジションヘッダー */}
@@ -159,14 +159,25 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
                 </div>
               </div>
 
-              {/* 生い立ち・キャリアストーリー（全選手対応リッチテキスト） */}
+              {/* プレースタイル・キャリア概要（全選手対応リッチテキスト） */}
               <div className="rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900/70 to-slate-900/90 p-4 border border-emerald-500/30 shadow-lg">
                 <div className="text-xs font-black text-emerald-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
-                  <span>📖</span>
-                  <span>BIOGRAPHY &amp; ROOTS（生い立ちとキャリアの軌跡）</span>
+                  <span>⚡</span>
+                  <span>PLAY STYLE &amp; CAREER（プレースタイル・キャリア概要）</span>
                 </div>
                 <div className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal select-text">
                   {player.bio_rich || player.style_rich || player.style_summary || player.desc_ja || '世界的な名手としてフットボール史に刻まれるレジェンド。'}
+                </div>
+              </div>
+
+              {/* 生い立ち（Wikipediaより抽出、情報が無い場合はブランク） */}
+              <div className="rounded-2xl bg-gradient-to-r from-teal-950/35 via-slate-900/70 to-slate-900/90 p-4 border border-teal-500/30 shadow-lg">
+                <div className="text-xs font-black text-teal-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                  <span>📖</span>
+                  <span>UPBRINGING &amp; ROOTS（生い立ち）</span>
+                </div>
+                <div className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal select-text min-h-[1.25rem]">
+                  {player.early_life || ''}
                 </div>
               </div>
 

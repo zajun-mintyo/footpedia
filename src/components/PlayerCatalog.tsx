@@ -121,6 +121,7 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
           if (p.style_summary && normalizeSearchText(p.style_summary).includes(token)) return true;
           if (p.style_rich && normalizeSearchText(p.style_rich).includes(token)) return true;
           if (p.bio_rich && normalizeSearchText(p.bio_rich).includes(token)) return true;
+          if (p.early_life && normalizeSearchText(p.early_life).includes(token)) return true;
           // バロンドール検索
           if (p.ballon_dor) {
             if (normalizeSearchText('バロンドール ballon dor').includes(token)) return true;

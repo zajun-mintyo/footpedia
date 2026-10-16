@@ -63,4 +63,5 @@ export interface Player {
   intl_summary?: string;
   style_rich?: string;
   bio_rich?: string;
+  early_life?: string;
 }

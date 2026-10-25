@@ -64,4 +64,7 @@ export interface Player {
   style_rich?: string;
   bio_rich?: string;
   early_life?: string;
+  // 2026年ワールドカップ日本代表フラグ・背番号
+  is_wc2026_jpn?: boolean;
+  wc2026_number?: number;
 }

@@ -86,6 +86,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onSelect }) => {
             <span>🏆</span>
             <span>W杯制覇 {(player.world_cup.winner_count ?? 0) > 1 ? `×${player.world_cup.winner_count}` : ''}</span>
           </div>
+        ) : player.is_wc2026_jpn ? (
+          <div className="absolute top-1.5 right-1.5 z-20 flex items-center gap-1 rounded bg-gradient-to-r from-blue-600 to-indigo-600 px-1.5 py-0.5 text-[9px] font-black text-white shadow-md border border-blue-400/50">
+            <span>🇯🇵</span>
+            <span>2026W杯代表</span>
+          </div>
         ) : player.league_mvp && player.league_mvp.length > 0 ? (
           <div className="absolute top-1.5 right-1.5 z-20 flex items-center gap-1 rounded bg-gradient-to-r from-sky-400 to-blue-500 px-1.5 py-0.5 text-[9px] font-black text-slate-950 shadow-md border border-sky-200">
             <span>🎖️</span>

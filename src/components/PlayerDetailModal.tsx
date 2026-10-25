@@ -211,13 +211,28 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
               </div>
 
               {/* 栄冠・タイトルアワード（該当選手のみ） */}
-              {(player.ballon_dor || player.world_cup || (player.league_mvp && player.league_mvp.length > 0)) && (
+              {(player.ballon_dor || player.world_cup || player.is_wc2026_jpn || (player.league_mvp && player.league_mvp.length > 0)) && (
                 <div className="rounded-2xl bg-gradient-to-r from-amber-950/30 via-slate-900/60 to-slate-900/80 p-3.5 sm:p-4 border border-amber-500/30">
                   <div className="text-xs font-black text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
                     <span>🏆</span>
                     <span>HONORS &amp; AWARDS（獲得主要タイトル・個人賞）</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {/* 2026年ワールドカップ日本代表 */}
+                    {player.is_wc2026_jpn && (
+                      <div className="flex items-start gap-2.5 bg-slate-900/80 p-2.5 rounded-xl border border-blue-400/50">
+                        <span className="text-2xl shrink-0">🇯🇵</span>
+                        <div className="min-w-0">
+                          <div className="text-xs sm:text-sm font-black text-blue-300">
+                            2026年 FIFAワールドカップ 日本代表
+                          </div>
+                          <div className="text-[11px] text-blue-200/90 font-medium truncate">
+                            北中米W杯 SAMURAI BLUE 選出 {player.wc2026_number && player.wc2026_number <= 26 ? `(#${player.wc2026_number})` : '(追加招集)'}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* バロンドール */}
                     {player.ballon_dor && (
                       <div className="flex items-start gap-2.5 bg-slate-900/80 p-2.5 rounded-xl border border-amber-400/50">

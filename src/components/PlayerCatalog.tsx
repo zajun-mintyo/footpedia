@@ -12,6 +12,7 @@ interface PlayerCatalogProps {
 
 const HONORS = [
   { key: 'ALL', label: 'すべて', icon: '⚽' },
+  { key: 'WC_2026_JPN', label: '2026年ワールドカップ日本代表', icon: '🇯🇵' },
   { key: 'WC_WINNER', label: 'W杯優勝', icon: '🏆' },
   { key: 'WC_GOLDEN_BOOT', label: 'W杯得点王', icon: '⚽' },
   { key: 'LEAGUE_MVP', label: '主要リーグMVP', icon: '🎖️' },
@@ -102,7 +103,7 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
     const rawTokens = searchQuery.replace(/[\u3000]/g, ' ').trim().split(/\s+/).filter((t) => t.length > 0);
     const searchTokens = rawTokens.map(normalizeSearchText);
 
-    return players.filter((p) => {
+    const matched = players.filter((p) => {
       // 1. テキスト検索（AND検索・ひらがな/カタカナ相互・スペース/中黒柔軟マッチ・生い立ちやアワードも対象）
       if (searchTokens.length > 0) {
         const allMatch = searchTokens.every((token) => {
@@ -122,6 +123,10 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
           if (p.style_rich && normalizeSearchText(p.style_rich).includes(token)) return true;
           if (p.bio_rich && normalizeSearchText(p.bio_rich).includes(token)) return true;
           if (p.early_life && normalizeSearchText(p.early_life).includes(token)) return true;
+          // 2026年ワールドカップ日本代表検索
+          if (p.is_wc2026_jpn) {
+            if (normalizeSearchText('2026年ワールドカップ日本代表 2026w杯 北中米w杯 森保ジャパン サムライブルー samurai blue').includes(token)) return true;
+          }
           // バロンドール検索
           if (p.ballon_dor) {
             if (normalizeSearchText('バロンドール ballon dor').includes(token)) return true;
@@ -143,7 +148,9 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
       }
 
       // 2. アワード絞り込み
-      if (selectedHonor === 'BALLON_DOR') {
+      if (selectedHonor === 'WC_2026_JPN') {
+        if (!p.is_wc2026_jpn) return false;
+      } else if (selectedHonor === 'BALLON_DOR') {
         if (!p.ballon_dor) return false;
       } else if (selectedHonor === 'WC_WINNER') {
         if (!p.world_cup || !p.world_cup.is_winner) return false;
@@ -182,6 +189,13 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
 
       return true;
     });
+
+    // 2026年W杯日本代表フィルター選択時は背番号順（1〜26＋追加招集）でソート
+    if (selectedHonor === 'WC_2026_JPN') {
+      return [...matched].sort((a, b) => (a.wc2026_number ?? 99) - (b.wc2026_number ?? 99));
+    }
+
+    return matched;
   }, [players, searchQuery, selectedHonor, selectedCountry, selectedDecade, selectedPosition]);
 
   const activeHonorObj = HONORS.find((h) => h.key === selectedHonor);

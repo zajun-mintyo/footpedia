@@ -92,8 +92,11 @@ export async function generateMetadata({
     `${player.name_ja} 身長`,
     player.country_ja,
     player.position_detail || player.position,
+    'サッカー選手図鑑',
+    'サッカー選手一覧',
     'サッカー選手名鑑',
     'FootPedia',
+    'フットペディア',
   ];
 
   return {
@@ -200,7 +203,7 @@ export default async function PlayerDetailPage({
                 </span>
               </div>
               <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium truncate">
-                世界のレジェンド＆名選手 {players.length}名デジタル名鑑
+                世界のレジェンド＆日本代表 サッカー選手図鑑・選手一覧（{players.length}名）
               </p>
             </div>
           </Link>
@@ -211,7 +214,7 @@ export default async function PlayerDetailPage({
               className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold border border-slate-700 transition"
             >
               <span>🔍</span>
-              <span>名鑑一覧・検索へ</span>
+              <span>選手図鑑・一覧へ</span>
             </Link>
             <Link
               href="/board"
@@ -227,7 +230,7 @@ export default async function PlayerDetailPage({
       {/* パンくずリスト */}
       <nav aria-label="パンくずリスト" className="max-w-6xl mx-auto px-4 sm:px-8 pt-4 pb-2 text-xs text-slate-400 flex items-center gap-2 overflow-x-auto whitespace-nowrap">
         <Link href="/" className="hover:text-emerald-400 transition">
-          FootPedia トップ（選手名鑑）
+          FootPedia トップ（サッカー選手図鑑・選手一覧）
         </Link>
         <span className="text-slate-600">/</span>
         <span className="text-slate-300">{player.is_women ? '日本女子' : player.country_ja}</span>

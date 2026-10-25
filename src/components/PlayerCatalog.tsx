@@ -216,7 +216,7 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
                   </span>
                 </div>
                 <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium truncate max-w-[170px] sm:max-w-none">
-                  世界のレジェンド＆名選手 {players.length}名デジタル名鑑
+                  世界のレジェンド＆日本代表 サッカー選手図鑑・選手一覧（{players.length}名）
                 </p>
               </div>
             </div>
@@ -415,6 +415,118 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
           </div>
         )}
       </main>
+
+      {/* SEO・サイトガイド用フッターセクション（検索エンジン＆初見ユーザー向け） */}
+      <footer className="max-w-7xl mx-auto px-4 sm:px-8 mt-16 pt-10 border-t border-slate-800/80 text-slate-400">
+        <div className="rounded-2xl bg-slate-900/50 border border-slate-800/70 p-6 sm:p-8 space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/70 pb-4">
+            <div>
+              <h2 className="text-sm sm:text-base font-black text-slate-200 flex items-center gap-2">
+                <span>⚽</span>
+                <span>FootPedia（フットペディア）｜Webサッカー選手図鑑・歴代サッカー選手一覧</span>
+              </h2>
+              <p className="text-xs text-slate-400 mt-1">
+                小学生からシニア・サッカーファンまで楽しめる、海外＆日本の有名サッカー選手名鑑データベース（全{players.length}名収録）
+              </p>
+            </div>
+            <Link
+              href="/board"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-emerald-600 text-slate-200 hover:text-white text-xs font-bold transition shrink-0 self-start sm:self-auto"
+            >
+              <span>📋</span>
+              <span>無料サッカー作戦盤（フォーメーション作成）を開く</span>
+            </Link>
+          </div>
+
+          <p className="text-xs leading-relaxed text-slate-400">
+            <strong>FootPedia（フットペディア）</strong>は、世界の歴代サッカーレジェンドから現役スター、2026年FIFAワールドカップ日本代表（SAMURAI BLUE・森保ジャパン）、なでしこジャパンまで全{players.length}名のサッカー選手一覧を検索・比較できる無料の<strong>オンライン・サッカー選手図鑑（選手名鑑）</strong>です。すべての漢字・カタカナ選手名にふりがな（ルビ）を完備し、各選手の生い立ちストーリー（ルーツ）、プレースタイル、所属クラブ遍歴、背番号、身長・利き足、バロンドールやワールドカップの受賞歴を網羅しています。
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-xs">
+            <div className="bg-slate-950/60 rounded-xl p-4 border border-slate-800/60">
+              <h3 className="font-bold text-slate-200 mb-2">🏆 人気の選手一覧・アワード図鑑</h3>
+              <ul className="space-y-1.5 text-slate-400">
+                <li>
+                  <button onClick={() => { setSelectedHonor('WC_2026_JPN'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・2026年ワールドカップ日本代表 選手一覧（27名）
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedHonor('BALLON_DOR'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・歴代バロンドール受賞者 選手一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedHonor('WC_WINNER'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・ワールドカップ優勝メンバー 選手一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedHonor('WC_GOLDEN_BOOT'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・ワールドカップ歴代得点王 一覧
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-950/60 rounded-xl p-4 border border-slate-800/60">
+              <h3 className="font-bold text-slate-200 mb-2">🌍 国別サッカー選手図鑑・一覧</h3>
+              <ul className="space-y-1.5 text-slate-400">
+                <li>
+                  <button onClick={() => { setSelectedCountry('JPN'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・サッカー日本代表（男子）歴代選手一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedCountry('JPN_WOMEN'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・なでしこジャパン（日本女子）選手一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedCountry('BRA'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・ブラジル代表 歴代サッカー選手一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedCountry('ARG'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・アルゼンチン・欧州強豪国 選手一覧
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-950/60 rounded-xl p-4 border border-slate-800/60">
+              <h3 className="font-bold text-slate-200 mb-2">⚡ ポジション・年代別サッカー選手図鑑</h3>
+              <ul className="space-y-1.5 text-slate-400">
+                <li>
+                  <button onClick={() => { setSelectedPosition('FW'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・世界の名フォワード（FW・ストライカー）一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedPosition('MF'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・世界の名ミッドフィールダー（MF・司令塔）一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedPosition('DF'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・世界の名ディフェンダー（DF）一覧
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setSelectedPosition('GK'); scrollToTop(); }} className="hover:text-emerald-400 transition cursor-pointer text-left">
+                    ・世界の名ゴールキーパー（GK・守護神）一覧
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="pt-2 text-center text-[11px] text-slate-500">
+            © {new Date().getFullYear()} FootPedia（フットペディア） - サッカー選手図鑑・選手一覧＆タクティクス作戦ボード
+          </div>
+        </div>
+      </footer>
 
       {/* 選手詳細モーダル */}
       {selectedPlayer && (

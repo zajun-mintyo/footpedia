@@ -16,22 +16,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://footpedia-weld.vercel.app'),
   title: {
-    default: "FootPedia - 歴代サッカーレジェンド500名名鑑＆作戦ボード",
-    template: "%s | FootPedia",
+    default: "FootPedia（フットペディア）| サッカー選手図鑑・歴代レジェンド＆日本代表選手一覧（558名名鑑＆作戦盤）",
+    template: "%s | FootPedia（サッカー選手図鑑）",
   },
-  description: "世界歴代サッカースター500名の詳細プロフィール（生い立ち・所属クラブ遍歴・獲得タイトル・背番号）を網羅した国内最大級の名鑑＆ブラウザで動く無料タクティクス作戦ボード。",
-  keywords: ["サッカー", "選手名鑑", "レジェンド", "2026年ワールドカップ日本代表", "SAMURAI BLUE", "森保ジャパン", "バロンドール", "ワールドカップ", "なでしこジャパン", "作戦盤", "戦術ボード", "FootPedia", "サッカー作戦盤", "フォーメーション"],
+  description: "海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑・選手名鑑「FootPedia（フットペディア）」。2026年ワールドカップ日本代表（SAMURAI BLUE）、バロンドール受賞者、なでしこジャパンの生い立ち・プレースタイル・所属クラブ遍歴から、ブラウザで動く無料サッカー作戦盤まで完全収録。",
+  keywords: ["FootPedia", "フットペディア", "サッカー選手 図鑑", "サッカー選手図鑑", "サッカー選手 一覧", "サッカー選手一覧", "サッカー 選手名鑑", "海外サッカー選手 一覧", "歴代サッカー選手", "2026年ワールドカップ日本代表", "SAMURAI BLUE", "森保ジャパン", "バロンドール", "ワールドカップ", "なでしこジャパン", "サッカー 作戦盤 無料", "戦術ボード", "フォーメーション作成"],
   openGraph: {
-    title: "FootPedia - 歴代サッカーレジェンド500名名鑑＆作戦ボード",
-    description: "世界歴代サッカースター500名の詳細プロフィール＆無料作戦盤アプリ",
+    title: "FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（558名名鑑＆作戦盤）",
+    description: "海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑＆無料サッカー作戦盤アプリ",
     url: "https://footpedia-weld.vercel.app",
-    siteName: "FootPedia",
+    siteName: "FootPedia（フットペディア）",
     images: [
       {
         url: "/ogp.png",
         width: 1200,
         height: 630,
-        alt: "FootPedia - 歴代サッカーレジェンド500名名鑑＆作戦ボード",
+        alt: "FootPedia（フットペディア）- サッカー選手図鑑・歴代サッカー選手一覧＆作戦ボード",
       },
     ],
     locale: "ja_JP",
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FootPedia - 歴代サッカーレジェンド500名名鑑＆作戦ボード",
-    description: "世界歴代サッカースター500名の詳細プロフィール＆無料作戦盤アプリ",
+    title: "FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（558名名鑑＆作戦盤）",
+    description: "海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑＆無料サッカー作戦盤アプリ",
     images: ["/ogp.png"],
   },
   verification: {

@@ -1,8 +1,12 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'サッカーボードアプリ（作戦盤）- Footpedia',
-  description: '歴代500名のレジェンド選手を自由に配置してドリームチームを結成できる、無料のデジタルタクティクスボード。矢印やライン、フォーメーション作成機能付き。',
+  title: '無料サッカー作戦盤（戦術ボード・フォーメーション作成アプリ）| FootPedia',
+  description: 'ブラウザですぐ使える登録不要・無料のWebサッカー作戦盤（タクティクスボード）。歴代レジェンド・日本代表選手を配置したベストイレブン・フォーメーション作成や、矢印・ライン描画、画像保存に対応。',
+  keywords: ['サッカー 作戦盤 無料', 'サッカー 作戦ボード Web', '戦術ボード アプリ', 'サッカー フォーメーション 作成', 'ベストイレブン 作成', 'FootPedia', 'フットペディア'],
+  alternates: {
+    canonical: 'https://footpedia-weld.vercel.app/board',
+  },
 };
 
 export default function BoardPage() {

@@ -109,9 +109,13 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onSelect }) => {
       {/* 3. 選手情報 */}
       <div className="flex flex-col justify-between pt-1">
         <div className="mb-1">
-          <div className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
+          <a
+            href={`/players/${player.qid}`}
+            onClick={(e) => e.preventDefault()}
+            className="block text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate"
+          >
             {player.name_ja}
-          </div>
+          </a>
           <div className="text-[10px] text-slate-400 truncate tracking-wide">
             {player.name_en}
           </div>

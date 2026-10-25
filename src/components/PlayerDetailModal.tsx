@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Player } from '@/types/player';
 
 interface PlayerDetailModalProps {
@@ -349,22 +350,31 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({ player, on
 
             </div>
 
-            {/* モーダルフッター（Wikipediaリンク等） */}
+            {/* モーダルフッター（個別ページリンク・Wikipediaリンク等） */}
             <div className="mt-8 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
               <span className="text-[11px] text-slate-500 font-medium order-2 sm:order-1">
                 Footpedia 歴代レジェンド名鑑
               </span>
-              {player.wiki_url && (
-                <a
-                  href={player.wiki_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="order-1 sm:order-2 inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition shadow-sm active:scale-95"
+              <div className="order-1 sm:order-2 flex flex-wrap items-center gap-2">
+                <Link
+                  href={`/players/${player.qid}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition shadow-sm active:scale-95"
                 >
-                  <span>Wikipediaで詳細を見る</span>
-                  <span className="text-sm">↗</span>
-                </a>
-              )}
+                  <span>🔗</span>
+                  <span>個別ページを開く</span>
+                </Link>
+                {player.wiki_url && (
+                  <a
+                    href={player.wiki_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition shadow-sm active:scale-95"
+                  >
+                    <span>Wikipediaで詳細を見る</span>
+                    <span className="text-sm">↗</span>
+                  </a>
+                )}
+              </div>
             </div>
 
           </div>

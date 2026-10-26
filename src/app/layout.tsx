@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "FootPedia（フットペディア）",
     images: [
       {
-        url: "/ogp.png",
+        url: "/ogp.png?v=558",
         width: 1200,
         height: 630,
         alt: "FootPedia（フットペディア）- サッカー選手図鑑・歴代サッカー選手一覧＆作戦ボード",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（558名名鑑＆作戦盤）",
     description: "海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑＆無料サッカー作戦盤アプリ",
-    images: ["/ogp.png"],
+    images: ["/ogp.png?v=558"],
   },
   verification: {
     google: "PWyl9wiPWp7WS5DrfHowmNdz6buiN8XAjaBnfAn-Ulg",

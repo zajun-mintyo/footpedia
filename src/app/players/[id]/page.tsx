@@ -120,13 +120,13 @@ export async function generateMetadata({
               alt: `${player.name_ja}（${player.name_en}）`,
             },
           ]
-        : ['/ogp.png'],
+        : ['/ogp.png?v=558'],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} | FootPedia`,
       description,
-      images: player.image ? [player.image] : ['/ogp.png'],
+      images: player.image ? [player.image] : ['/ogp.png?v=558'],
     },
   };
 }

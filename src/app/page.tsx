@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     description: '海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑＆ブラウザで動く無料作戦盤アプリ',
     url: 'https://footpedia-weld.vercel.app',
     type: 'website',
-    images: ['/ogp.png'],
+    images: ['/ogp.png?v=558'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（558名名鑑＆作戦盤）',
     description: '海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑＆ブラウザで動く無料作戦盤アプリ',
-    images: ['/ogp.png'],
+    images: ['/ogp.png?v=558'],
   },
 };
 

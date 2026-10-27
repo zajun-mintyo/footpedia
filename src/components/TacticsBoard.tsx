@@ -58,6 +58,46 @@ const DEFAULT_FORMATIONS: Record<string, { x: number; y: number; num: number; po
     { x: 50, y: 35, num: 10, pos: 'AM' },
     { x: 36, y: 18, num: 9, pos: 'CF' },
     { x: 64, y: 18, num: 11, pos: 'CF' },
+  ],
+  '3-3-1': [
+    { x: 50, y: 88, num: 1, pos: 'GK' },
+    { x: 22, y: 70, num: 2, pos: 'DF' },
+    { x: 50, y: 74, num: 4, pos: 'DF' },
+    { x: 78, y: 70, num: 3, pos: 'DF' },
+    { x: 20, y: 46, num: 7, pos: 'MF' },
+    { x: 50, y: 48, num: 6, pos: 'MF' },
+    { x: 80, y: 46, num: 8, pos: 'MF' },
+    { x: 50, y: 20, num: 9, pos: 'FW' },
+  ],
+  '2-3-2': [
+    { x: 50, y: 88, num: 1, pos: 'GK' },
+    { x: 34, y: 72, num: 3, pos: 'DF' },
+    { x: 66, y: 72, num: 4, pos: 'DF' },
+    { x: 18, y: 46, num: 7, pos: 'MF' },
+    { x: 50, y: 50, num: 6, pos: 'MF' },
+    { x: 82, y: 46, num: 8, pos: 'MF' },
+    { x: 35, y: 20, num: 9, pos: 'FW' },
+    { x: 65, y: 20, num: 10, pos: 'FW' },
+  ],
+  '3-2-2': [
+    { x: 50, y: 88, num: 1, pos: 'GK' },
+    { x: 22, y: 70, num: 2, pos: 'DF' },
+    { x: 50, y: 74, num: 4, pos: 'DF' },
+    { x: 78, y: 70, num: 3, pos: 'DF' },
+    { x: 35, y: 48, num: 6, pos: 'MF' },
+    { x: 65, y: 48, num: 8, pos: 'MF' },
+    { x: 34, y: 20, num: 9, pos: 'FW' },
+    { x: 66, y: 20, num: 10, pos: 'FW' },
+  ],
+  '2-4-1': [
+    { x: 50, y: 88, num: 1, pos: 'GK' },
+    { x: 34, y: 72, num: 3, pos: 'DF' },
+    { x: 66, y: 72, num: 4, pos: 'DF' },
+    { x: 50, y: 58, num: 6, pos: 'MF' },
+    { x: 18, y: 45, num: 7, pos: 'MF' },
+    { x: 82, y: 45, num: 8, pos: 'MF' },
+    { x: 50, y: 36, num: 10, pos: 'MF' },
+    { x: 50, y: 18, num: 9, pos: 'FW' },
   ]
 };
 
@@ -66,8 +106,63 @@ export const TacticsBoard: React.FC<TacticsBoardProps> = ({ initialPlayers }) =>
   const [boardPlayers, setBoardPlayers] = useState<PlacedPlayer[]>([]);
   const [draggedPlayer, setDraggedPlayer] = useState<string | null>(null);
   const pitchRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [searchWord, setSearchWord] = useState('');
   const [selectedDrawerPlayer, setSelectedDrawerPlayer] = useState<Player | null>(null);
+
+  // 配置データのJSON保存 (Export)
+  const handleExportJson = () => {
+    const exportData = {
+      app: 'Foopedia Tactics Board',
+      version: '1.0',
+      exportedAt: new Date().toISOString(),
+      formation,
+      players: boardPlayers,
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `foopedia_tactics_${formation}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // 配置データのJSON読込 (Import)
+  const handleImportJson = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(String(ev.target?.result || '{}'));
+        if (data.formation && DEFAULT_FORMATIONS[data.formation]) {
+          setFormation(data.formation);
+        }
+        if (Array.isArray(data.players)) {
+          setBoardPlayers(data.players);
+        } else if (Array.isArray(data.pieces)) {
+          // tactics_board.html 形式のJSONにも対応
+          const converted: PlacedPlayer[] = data.pieces
+            .filter((p: { type?: string }) => p.type === 'player')
+            .map((p: { id?: string; playerQid?: string; playerObj?: { qid?: string; name?: string }; assignedPos?: string; x?: number; y?: number; team?: 'home' | 'away' }, idx: number) => ({
+              id: p.id || `imported-${idx}`,
+              qid: p.playerQid || p.playerObj?.qid || initialPlayers[0]?.qid || '',
+              name: p.playerObj?.name || 'Player',
+              number: idx + 1,
+              position: p.assignedPos || 'MF',
+              x: typeof p.x === 'number' ? p.x : 50,
+              y: typeof p.y === 'number' ? p.y : 50,
+              team: p.team || 'home',
+            }));
+          if (converted.length > 0) setBoardPlayers(converted);
+        }
+      } catch {
+        alert('JSONファイルの読み込みに失敗しました。');
+      }
+    };
+    reader.readAsText(file, 'utf-8');
+  };
 
   // 初期フォーメーション配置
   useEffect(() => {
@@ -149,17 +244,46 @@ export const TacticsBoard: React.FC<TacticsBoardProps> = ({ initialPlayers }) =>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <label className="text-xs font-bold text-slate-400">フォーメーション:</label>
           <select
             value={formation}
             onChange={(e) => setFormation(e.target.value)}
             className="rounded-xl border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-bold text-emerald-400 focus:outline-none"
           >
-            <option value="4-3-3">4-3-3 (攻撃型)</option>
-            <option value="4-4-2">4-4-2 (クラシック)</option>
-            <option value="3-5-2">3-5-2 (中盤支配型)</option>
+            <optgroup label="⚽ サッカー (11人制)">
+              <option value="4-3-3">4-3-3 (攻撃型)</option>
+              <option value="4-4-2">4-4-2 (クラシック)</option>
+              <option value="3-5-2">3-5-2 (中盤支配型)</option>
+            </optgroup>
+            <optgroup label="👦 8人制サッカー (ジュニア)">
+              <option value="3-3-1">3-3-1 (基本バランス型)</option>
+              <option value="2-3-2">2-3-2 (攻撃厚み型)</option>
+              <option value="3-2-2">3-2-2 (2トップ型)</option>
+              <option value="2-4-1">2-4-1 (中盤ワイド型)</option>
+            </optgroup>
           </select>
+          <button
+            type="button"
+            onClick={handleExportJson}
+            className="px-2.5 py-1 rounded-xl bg-blue-900/70 hover:bg-blue-800 text-blue-200 border border-blue-600 text-xs font-bold transition"
+          >
+            💾 保存 (Export)
+          </button>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="px-2.5 py-1 rounded-xl bg-indigo-900/70 hover:bg-indigo-800 text-indigo-200 border border-indigo-600 text-xs font-bold transition"
+          >
+            📂 読込 (Import)
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            onChange={handleImportJson}
+            className="hidden"
+          />
         </div>
       </header>
 

@@ -29,7 +29,7 @@ const COUNTRIES = [
   { code: 'ARG', label: 'アルゼンチン', flag: '🇦🇷' },
   { code: 'FRA', label: 'フランス', flag: '🇫🇷' },
   { code: 'DEU', label: 'ドイツ', flag: '🇩🇪' },
-  { code: 'GBR', label: 'イングランド', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+  { code: 'ENG', label: 'イングランド', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
   { code: 'ESP', label: 'スペイン', flag: '🇪🇸' },
   { code: 'ITA', label: 'イタリア', flag: '🇮🇹' },
   { code: 'PRT', label: 'ポルトガル', flag: '🇵🇹' },
@@ -37,10 +37,21 @@ const COUNTRIES = [
   { code: 'CZE', label: 'チェコ', flag: '🇨🇿' },
   { code: 'COL', label: 'コロンビア', flag: '🇨🇴' },
   { code: 'HRV', label: 'クロアチア', flag: '🇭🇷' },
-  { code: 'POL', label: 'ポーランド', flag: '🇵🇱' },
-  { code: 'PRY', label: 'パラグアイ', flag: '🇵🇾' },
   { code: 'URY', label: 'ウルグアイ', flag: '🇺🇾' },
+  { code: 'POL', label: 'ポーランド', flag: '🇵🇱' },
+  { code: 'SCO', label: 'スコットランド', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
+  { code: 'WAL', label: 'ウェールズ', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿' },
+  { code: 'PRY', label: 'パラグアイ', flag: '🇵🇾' },
 ];
+
+const SORT_OPTIONS = [
+  { key: 'POPULAR', label: '人気・実績順' },
+  { key: 'NAME_ASC', label: '五十音順' },
+  { key: 'YEAR_DESC', label: '生年（新しい順）' },
+  { key: 'YEAR_ASC', label: '生年（古い順）' },
+] as const;
+
+type SortKey = (typeof SORT_OPTIONS)[number]['key'];
 
 const POSITIONS = [
   { key: 'ALL', label: 'すべて' },
@@ -66,6 +77,7 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
   const [selectedDecade, setSelectedDecade] = useState('ALL');
   const [selectedCountry, setSelectedCountry] = useState('ALL');
   const [selectedPosition, setSelectedPosition] = useState('ALL');
+  const [sortBy, setSortBy] = useState<SortKey>('POPULAR');
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -97,6 +109,7 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
     setSelectedDecade('ALL');
     setSelectedCountry('ALL');
     setSelectedPosition('ALL');
+    setSortBy('POPULAR');
   };
 
   const filteredPlayers = useMemo(() => {
@@ -166,8 +179,8 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
           if (!p.is_women) return false;
         } else if (selectedCountry === 'JPN') {
           if (p.country_code !== 'JPN' || p.is_women) return false;
-        } else if (selectedCountry === 'GBR') {
-          if (p.country_code !== 'GBR' && p.country_code !== 'ENG') return false;
+        } else if (selectedCountry === 'ENG') {
+          if (p.country_code !== 'ENG' && p.country_code !== 'GBR') return false;
         } else if (selectedCountry === 'HRV') {
           if (p.country_code !== 'HRV' && p.country_code !== 'CRO') return false;
         } else if (selectedCountry === 'PRY') {
@@ -190,13 +203,29 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
       return true;
     });
 
-    // 2026年W杯日本代表フィルター選択時は背番号順（1〜26＋追加招集）でソート
-    if (selectedHonor === 'WC_2026_JPN') {
+    // 2026年W杯日本代表フィルター選択時かつデフォルト順の場合は背番号順（1〜26＋追加招集）でソート
+    if (selectedHonor === 'WC_2026_JPN' && sortBy === 'POPULAR') {
       return [...matched].sort((a, b) => (a.wc2026_number ?? 99) - (b.wc2026_number ?? 99));
     }
 
-    return matched;
-  }, [players, searchQuery, selectedHonor, selectedCountry, selectedDecade, selectedPosition]);
+    // 選択された並び替えルールに従って全選手を画一的にソート
+    return [...matched].sort((a, b) => {
+      if (sortBy === 'NAME_ASC') {
+        return (a.name_ja_kana || a.name_ja).localeCompare(b.name_ja_kana || b.name_ja, 'ja');
+      }
+      if (sortBy === 'YEAR_DESC') {
+        return (b.birth_year ?? 0) - (a.birth_year ?? 0) || (b.sitelinks ?? 0) - (a.sitelinks ?? 0);
+      }
+      if (sortBy === 'YEAR_ASC') {
+        return (a.birth_year ?? 9999) - (b.birth_year ?? 9999) || (b.sitelinks ?? 0) - (a.sitelinks ?? 0);
+      }
+      // POPULAR（人気・実績順）
+      return (
+        (b.sitelinks ?? 0) - (a.sitelinks ?? 0) ||
+        (a.name_ja_kana || a.name_ja).localeCompare(b.name_ja_kana || b.name_ja, 'ja')
+      );
+    });
+  }, [players, searchQuery, selectedHonor, selectedCountry, selectedDecade, selectedPosition, sortBy]);
 
   const activeHonorObj = HONORS.find((h) => h.key === selectedHonor);
 
@@ -364,7 +393,25 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
             ))}
           </div>
 
-          <div className="flex items-center gap-2.5 text-xs text-slate-400">
+          <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-400">
+            <div className="flex items-center gap-1.5">
+              <label htmlFor="player-sort" className="text-[11px] font-bold text-slate-400 shrink-0">
+                並び順:
+              </label>
+              <select
+                id="player-sort"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortKey)}
+                className="rounded-lg bg-slate-900/90 border border-slate-700 px-2.5 py-1 text-xs font-semibold text-slate-200 focus:border-emerald-500 focus:outline-none cursor-pointer"
+              >
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.key} value={opt.key}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {isFiltered && (
               <button
                 onClick={handleResetFilters}
@@ -546,7 +593,7 @@ export const PlayerCatalog: React.FC<PlayerCatalogProps> = ({ initialPlayers }) 
         aria-label="最上部へ戻る"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
         <span className="text-xs font-black tracking-wide">TOP</span>
       </button>

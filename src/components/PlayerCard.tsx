@@ -2,34 +2,19 @@
 
 import React from 'react';
 import { Player } from '@/types/player';
+import { getPlayerClubs, getPlayerFlag, POSITION_THEMES } from '@/lib/playerUtils';
 
 interface PlayerCardProps {
   player: Player;
   onSelect: (player: Player) => void;
 }
 
-const COUNTRY_FLAGS: Record<string, string> = {
-  JPN: '🇯🇵', BRA: '🇧🇷', ARG: '🇦🇷', FRA: '🇫🇷', DEU: '🇩🇪',
-  GBR: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', ESP: '🇪🇸', ITA: '🇮🇹', PRT: '🇵🇹',
-  NLD: '🇳🇱', URY: '🇺🇾', COL: '🇨🇴', CHL: '🇨🇱', SWE: '🇸🇪',
-  HRV: '🇭🇷', ROU: '🇷🇴', BGR: '🇧🇬', CIV: '🇨🇮', GHA: '🇬🇭',
-  CMR: '🇨🇲', KOR: '🇰🇷', IRN: '🇮🇷', SRB: '🇷🇸', DNK: '🇩🇰',
-  UKR: '🇺🇦', CZE: '🇨🇿'
-};
-
-const POSITION_THEMES: Record<string, { badge: string; border: string; label: string }> = {
-  FW: { badge: 'bg-rose-500 text-white', border: 'border-rose-400/40 hover:border-rose-500', label: 'FW (攻)' },
-  MF: { badge: 'bg-emerald-500 text-white', border: 'border-emerald-400/40 hover:border-emerald-500', label: 'MF (中)' },
-  DF: { badge: 'bg-sky-500 text-white', border: 'border-sky-400/40 hover:border-sky-500', label: 'DF (守)' },
-  GK: { badge: 'bg-amber-500 text-slate-900', border: 'border-amber-400/40 hover:border-amber-500', label: 'GK (守護神)' },
-};
-
 export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onSelect }) => {
-  const flag = player.is_women ? '🌸' : (COUNTRY_FLAGS[player.country_code] || '🌐');
+  const flag = getPlayerFlag(player);
   const posTheme = POSITION_THEMES[player.position] || POSITION_THEMES.MF;
-  const primaryClub = (player.teams_full && player.teams_full.length > 0)
-    ? player.teams_full[0]
-    : ((player.teams && player.teams.length > 0) ? player.teams[0] : (player.position_detail || ''));
+  const clubs = getPlayerClubs(player);
+  // カード下部には最新所属（最後のクラブ）または代表クラブを統一表示
+  const primaryClub = clubs.length > 0 ? clubs[clubs.length - 1] : (player.position_detail || '');
 
   return (
     <div
@@ -52,7 +37,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onSelect }) => {
 
       {/* 2. 写真エリア */}
       <div className="relative my-2 w-full flex-1 overflow-hidden rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700/50 flex items-center justify-center">
-        {/* 背景プレースホルダー（画像ロード失敗時やロード中にも美しく表示） */}
+        {/* 背景プレースホルダー */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-600 select-none">
           <span className="text-3xl opacity-40">⚽</span>
           <span className="text-[10px] font-black text-slate-500 mt-1 uppercase tracking-wider">{player.position}</span>
@@ -69,7 +54,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onSelect }) => {
             }}
           />
         )}
-        
+
         {/* タイトル・栄冠バッジ */}
         {player.ballon_dor ? (
           <div className="absolute top-1.5 right-1.5 z-20 flex items-center gap-1 rounded bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 px-1.5 py-0.5 text-[9px] font-black text-slate-950 shadow-md border border-amber-200">
@@ -127,11 +112,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onSelect }) => {
         </div>
 
         {/* 所属クラブ・詳細 */}
-        <div className="mt-1 flex items-center justify-between text-[10px] border-t border-slate-800 pt-1.5">
-          <span className="text-slate-400 truncate max-w-[70%]">
+        <div className="mt-1 flex items-center justify-between text-[10px] border-t border-slate-800 pt-1.5 gap-1">
+          <span className="text-slate-400 truncate max-w-[65%]">
             {primaryClub}
           </span>
-          <span className="font-semibold text-emerald-400 shrink-0">
+          <span className="font-semibold text-emerald-400 shrink-0 truncate max-w-[35%]">
             {player.position_detail || player.position}
           </span>
         </div>

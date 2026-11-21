@@ -16,19 +16,19 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://footpedia-weld.vercel.app'),
   title: {
-    default: "FootPedia（フットペディア）| サッカー選手図鑑・歴代レジェンド＆日本代表選手一覧（558名名鑑＆作戦盤）",
+    default: "FootPedia（フットペディア）| サッカー選手図鑑・歴代レジェンド＆日本代表選手一覧（553名名鑑＆作戦盤）",
     template: "%s | FootPedia（サッカー選手図鑑）",
   },
-  description: "海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑・選手名鑑「FootPedia（フットペディア）」。2026年ワールドカップ日本代表（SAMURAI BLUE）、バロンドール受賞者、なでしこジャパンの生い立ち・プレースタイル・所属クラブ遍歴から、ブラウザで動く無料サッカー作戦盤まで完全収録。",
+  description: "海外・日本の歴代サッカー選手一覧（553名）を網羅したWebサッカー選手図鑑・選手名鑑「FootPedia（フットペディア）」。2026年ワールドカップ日本代表（SAMURAI BLUE）、バロンドール受賞者、なでしこジャパンの生い立ち・プレースタイル・所属クラブ遍歴から、ブラウザで動く無料サッカー作戦盤まで完全収録。",
   keywords: ["FootPedia", "フットペディア", "サッカー選手 図鑑", "サッカー選手図鑑", "サッカー選手 一覧", "サッカー選手一覧", "サッカー 選手名鑑", "海外サッカー選手 一覧", "歴代サッカー選手", "2026年ワールドカップ日本代表", "SAMURAI BLUE", "森保ジャパン", "バロンドール", "ワールドカップ", "なでしこジャパン", "サッカー 作戦盤 無料", "戦術ボード", "フォーメーション作成"],
   openGraph: {
-    title: "FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（558名名鑑＆作戦盤）",
-    description: "海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑＆無料サッカー作戦盤アプリ",
+    title: "FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（553名名鑑＆作戦盤）",
+    description: "海外・日本の歴代サッカー選手一覧（553名）を網羅したWebサッカー選手図鑑＆無料サッカー作戦盤アプリ",
     url: "https://footpedia-weld.vercel.app",
     siteName: "FootPedia（フットペディア）",
     images: [
       {
-        url: "/ogp.png?v=558",
+        url: "/ogp.png?v=553",
         width: 1200,
         height: 630,
         alt: "FootPedia（フットペディア）- サッカー選手図鑑・歴代サッカー選手一覧＆作戦ボード",
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（558名名鑑＆作戦盤）",
-    description: "海外・日本の歴代サッカー選手一覧（558名）を網羅したWebサッカー選手図鑑＆無料サッカー作戦盤アプリ",
-    images: ["/ogp.png?v=558"],
+    title: "FootPedia（フットペディア）| サッカー選手図鑑・歴代サッカー選手一覧（553名名鑑＆作戦盤）",
+    description: "海外・日本の歴代サッカー選手一覧（553名）を網羅したWebサッカー選手図鑑＆無料サッカー作戦盤アプリ",
+    images: ["/ogp.png?v=553"],
   },
   verification: {
     google: "PWyl9wiPWp7WS5DrfHowmNdz6buiN8XAjaBnfAn-Ulg",
